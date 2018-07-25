@@ -1,0 +1,25 @@
+﻿@model IEnumerable<BaseProject.Models.FormDataModel>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Results</title>
+</head>
+<body>
+    <table>
+        @foreach (BaseProject.Models.FormDataModel f in Model)
+        {
+            <tr>
+                <td>@f.FormString</td>
+                <td>@f.FormString2</td>
+            </tr>
+        }
+    </table>
+    <a asp-action="MyFormPage">Add more strings</a>
+</body>
+</html>

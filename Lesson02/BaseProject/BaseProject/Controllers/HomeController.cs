@@ -40,5 +40,20 @@ namespace BaseProject.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        [Route("MyFormPage")]
+        [HttpGet]
+        public IActionResult MyFormPage()
+        {
+            return View();
+        }
+
+        [Route("MyFormPage")]
+        [HttpPost]
+        public IActionResult Index(FormDataModel formDataModel)
+        {
+            Repository.AddFormDataObject(formDataModel);
+            return View("FormResults", Repository.FormDataObjects);
+        }
     }
 }
