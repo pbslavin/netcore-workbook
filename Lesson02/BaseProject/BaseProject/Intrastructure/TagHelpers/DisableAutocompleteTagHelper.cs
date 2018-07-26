@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BaseProject.Intrastructure.TagHelpers
 {
-    [HtmlTargetElement("form", TagStructure = TagStructure.NormalOrSelfClosing)]
+    [HtmlTargetElement("input")]
     public class DisableAutocompleteTagHelper : TagHelper
     {
         public override void Process(TagHelperContext context, TagHelperOutput output)
