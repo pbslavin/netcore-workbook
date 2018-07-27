@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BaseProject.Intrastructure
 {
-    public class DateTimeProvider
+    public class DateTimeProvider : IDateTimeProvider
     {
         public DateTime Now
         {

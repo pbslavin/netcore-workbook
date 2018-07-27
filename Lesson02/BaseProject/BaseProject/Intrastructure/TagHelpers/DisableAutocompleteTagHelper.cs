@@ -11,11 +11,12 @@ namespace BaseProject.Intrastructure.TagHelpers
     {
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
-            if (!context.AllAttributes.Any(a => (a.Name == "autocomplete" && a.Value.ToString() == "on")))
-
+            if (context.AllAttributes.ContainsName("disable-autocomplete"))
             {
+                output.Attributes.RemoveAll("disable-autocomplete");
                 output.Attributes.SetAttribute("autocomplete", "off");
             }
         }
+
     }
 }

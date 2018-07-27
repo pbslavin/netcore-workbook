@@ -12,12 +12,12 @@
     <title>MyForm</title>
 </head>
 <body>
-    <form asp-action="/" method="post" autocomplete="on">
-        <label asp-for="FormString">Enter a string:</label>
-        <input asp-for="FormString" />
+    <form asp-action="/" method="post">
+        <label asp-for="FormString" >Enter a string:</label>
+        <input asp-for="FormString" disable-autocomplete />
         <br />
         <label asp-for="FormString2">Enter another string, with suggestions this time</label>
-        <input asp-for="FormString2" autocomplete="on"/>
+        <input asp-for="FormString2"/>
         <button type="submit">Submit</button>
     </form>
     <p>Click <a asp-controller="Home" asp-action="index">here</a> to go back to the index page.</p>
