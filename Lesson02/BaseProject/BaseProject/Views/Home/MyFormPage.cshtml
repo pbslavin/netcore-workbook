@@ -12,9 +12,9 @@
     <title>MyForm</title>
 </head>
 <body>
-    <form asp-action="/" method="post">
+    <form asp-action="/" method="post" disable-autocomplete>
         <label asp-for="FormString" >Enter a string:</label>
-        <input asp-for="FormString" disable-autocomplete />
+        <input asp-for="FormString" />
         <br />
         <label asp-for="FormString2">Enter another string, with suggestions this time</label>
         <input asp-for="FormString2"/>
