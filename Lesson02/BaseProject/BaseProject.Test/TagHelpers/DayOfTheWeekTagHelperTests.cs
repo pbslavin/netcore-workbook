@@ -26,8 +26,11 @@ namespace BaseProject.Test.TagHelpers
             {
                 // Assemble
                 //Current day
-                var mockDateTimeProvider = new MyMockedDateTimeProvider();
-                mockDateTimeProvider.Now = DateTime.Now;
+                var mockDateTimeProvider = new MyMockedDateTimeProvider
+                {
+                    Now = now
+                };
+                mockDateTimeProvider.Now = now;
                 TagHelper myTagHelper = new DayOfTheWeekTagHelper(mockDateTimeProvider);
                 TagHelperContext context = null;
                 TagHelperOutput output = new TagHelperOutput(
@@ -56,8 +59,10 @@ namespace BaseProject.Test.TagHelpers
             var now = DateTime.Now;
             // Assemble
             //Current day
-            var mockDateTimeProvider = new MyMockedDateTimeProvider();
-            mockDateTimeProvider.Now = DateTime.Now;
+            var mockDateTimeProvider = new MyMockedDateTimeProvider
+            {
+                Now = now
+            };
             TagHelper myTagHelper = new DayOfTheWeekTagHelper(mockDateTimeProvider);
             TagHelperContext context = null;
             TagHelperOutput output = new TagHelperOutput(
@@ -77,6 +82,6 @@ namespace BaseProject.Test.TagHelpers
             // Assert
             // show the bold tag
             Assert.Equal("b", output.TagName.ToString());
-            }
+        }
     }
 }

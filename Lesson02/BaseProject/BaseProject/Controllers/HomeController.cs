@@ -20,12 +20,31 @@ namespace BaseProject.Controllers
             return View();
         }
 
+
         [Route("About")]
+        [HttpPost]
+        public IActionResult About(Name name)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
+            return Redirect(nameof(About));
+        }
+
+        [Route("About")]
+        [HttpGet]
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";
 
-            return View();
+            var name = new Name()
+            {
+                FirstName = "Peter",
+                LastName = "Slavin"
+            };
+            return View(name);
         }
 
         [Route("Privacy")]
