@@ -1,0 +1,66 @@
+-- 1
+SELECT first_name, last_name, age FROM [User]
+
+-- 2
+SELECT first_name, last_name, age, cell_phone1, cell_phone2, email 
+FROM [User] JOIN ContactInformation ON [User].id = user_id
+
+-- 3
+SELECT first_name, last_name, age, 
+	CASE WHEN preferred_method = 'email' THEN email
+	WHEN preferred_method = 'cell_phone' THEN cell_phone1
+	ELSE home_phone END as preferred_contact
+	FROM [User] JOIN ContactInformation ON [User].id = user_id
+
+-- 4
+SELECT [User].last_name, Employment.name,
+	CASE 
+		WHEN date_ended IS NULL THEN 'yes'
+		ELSE 'no' END as currently_employed
+FROM [User], Employment, User_Employment
+WHERE [User].id = User_Employment.user_id
+	AND Employment.id = User_Employment.employment_id
+ORDER BY [User].id
+
+-- 5
+SELECT first_name, last_name, age FROM [User]
+	WHERE first_name = 'FirstName3' AND last_name = 'LastName3'
+
+-- 6
+SELECT first_name, last_name, age, cell_phone1, cell_phone2, email 
+FROM [User] JOIN ContactInformation ON [User].id = user_id
+WHERE cell_phone1 = '1234562001'
+
+-- 7
+[This one has already been done, three queries back.]
+
+-- 8
+SELECT first_name, last_name, age, cell_phone1, cell_phone2, email, ContactInformation.id, preferred_method 
+FROM [User] JOIN ContactInformation ON [User].id = user_id
+WHERE preferred_method IS NOT NULL
+
+-- 9
+SELECT [User].last_name, Employment.name
+FROM [User] 
+	JOIN User_Employment ON [User].id = user_id
+	JOIN Employment ON User_Employment.employment_id = Employment.id
+
+-- 10
+CREATE DATABASE userdb1;
+
+GO
+
+USE userdb1;
+
+CREATE TABLE [User] (
+    id int IDENTITY(1,1) PRIMARY KEY,
+    first_name nvarchar(255) NOT NULL,
+    last_name nvarchar(255),
+    age int
+);
+
+INSERT INTO [User] (first_name, last_name, age)
+VALUES ('Peter', 'Slavin', 51);
+
+SELECT * FROM [User]
+
