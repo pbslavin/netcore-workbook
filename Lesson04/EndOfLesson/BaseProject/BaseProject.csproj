@@ -5,7 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+<<<<<<< HEAD:Lesson04/BaseProject/BaseProject.csproj
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.1" />
+=======
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.1" />
+>>>>>>> dc83028c9ba9fb4541b377d0007dfbc250b429b5:Lesson04/EndOfLesson/BaseProject/BaseProject.csproj
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.0" />
   </ItemGroup>
 
