@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace BaseProject
 {
@@ -21,9 +22,9 @@ namespace BaseProject
         public void ConfigureServices(IServiceCollection services)
         {
             // Comment out if you do not have a local Sql Server installed
-            services.AddDbContext<ApplicationContext>(opts => opts.UseSqlServer(Configuration.GetConnectionString("BaseProject")));
+            // services.AddDbContext<ApplicationContext>(opts => opts.UseSqlServer(GetConnectionString("BaseProject")));
             // Uncomment if you do not have a local Sql Server installed
-            //services.AddDbContext<ApplicationContext>(opts => opts.UseSqlServer(Configuration.GetConnectionString("BaseProjectHosted")));
+            services.AddDbContext<ApplicationContext>(opts => opts.UseSqlServer(GetConnectionString("BaseProjectHosted")));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
@@ -42,6 +43,14 @@ namespace BaseProject
             app.UseStaticFiles();
 
             app.UseMvc();
+        }
+
+        private string GetConnectionString(string nameOfConnectionString)
+        {
+            var username = Environment.GetEnvironmentVariable("SQL_USERNAME", EnvironmentVariableTarget.User);
+            var password = Environment.GetEnvironmentVariable("SQL_PASSWORD", EnvironmentVariableTarget.User);
+
+            return string.Format(Configuration.GetConnectionString(nameOfConnectionString), username, password);
         }
     }
 }

@@ -1,18 +1,410 @@
--- 1
+USE [master]
+GO
+
+/****** Object:  Database [userdb]    Script Date: 8/16/2018 8:50:56 PM ******/
+CREATE DATABASE [userdb]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'userdb', FILENAME = N'/var/opt/mssql/data/userdb.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'userdb_log', FILENAME = N'/var/opt/mssql/data/userdb_log.ldf' , SIZE = 139264KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+GO
+
+ALTER DATABASE [userdb] SET COMPATIBILITY_LEVEL = 140
+GO
+
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [userdb].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+
+ALTER DATABASE [userdb] SET ANSI_NULL_DEFAULT OFF 
+GO
+
+ALTER DATABASE [userdb] SET ANSI_NULLS OFF 
+GO
+
+ALTER DATABASE [userdb] SET ANSI_PADDING OFF 
+GO
+
+ALTER DATABASE [userdb] SET ANSI_WARNINGS OFF 
+GO
+
+ALTER DATABASE [userdb] SET ARITHABORT OFF 
+GO
+
+ALTER DATABASE [userdb] SET AUTO_CLOSE OFF 
+GO
+
+ALTER DATABASE [userdb] SET AUTO_SHRINK OFF 
+GO
+
+ALTER DATABASE [userdb] SET AUTO_UPDATE_STATISTICS ON 
+GO
+
+ALTER DATABASE [userdb] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+
+ALTER DATABASE [userdb] SET CURSOR_DEFAULT  GLOBAL 
+GO
+
+ALTER DATABASE [userdb] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+
+ALTER DATABASE [userdb] SET NUMERIC_ROUNDABORT OFF 
+GO
+
+ALTER DATABASE [userdb] SET QUOTED_IDENTIFIER OFF 
+GO
+
+ALTER DATABASE [userdb] SET RECURSIVE_TRIGGERS OFF 
+GO
+
+ALTER DATABASE [userdb] SET  ENABLE_BROKER 
+GO
+
+ALTER DATABASE [userdb] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+
+ALTER DATABASE [userdb] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+
+ALTER DATABASE [userdb] SET TRUSTWORTHY OFF 
+GO
+
+ALTER DATABASE [userdb] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+
+ALTER DATABASE [userdb] SET PARAMETERIZATION SIMPLE 
+GO
+
+ALTER DATABASE [userdb] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+
+ALTER DATABASE [userdb] SET HONOR_BROKER_PRIORITY OFF 
+GO
+
+ALTER DATABASE [userdb] SET RECOVERY FULL 
+GO
+
+ALTER DATABASE [userdb] SET  MULTI_USER 
+GO
+
+ALTER DATABASE [userdb] SET PAGE_VERIFY CHECKSUM  
+GO
+
+ALTER DATABASE [userdb] SET DB_CHAINING OFF 
+GO
+
+ALTER DATABASE [userdb] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+
+ALTER DATABASE [userdb] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+
+ALTER DATABASE [userdb] SET DELAYED_DURABILITY = DISABLED 
+GO
+
+ALTER DATABASE [userdb] SET QUERY_STORE = OFF
+GO
+
+USE [userdb]
+GO
+
+ALTER DATABASE SCOPED CONFIGURATION SET IDENTITY_CACHE = ON;
+GO
+
+ALTER DATABASE SCOPED CONFIGURATION SET LEGACY_CARDINALITY_ESTIMATION = OFF;
+GO
+
+ALTER DATABASE SCOPED CONFIGURATION FOR SECONDARY SET LEGACY_CARDINALITY_ESTIMATION = PRIMARY;
+GO
+
+ALTER DATABASE SCOPED CONFIGURATION SET MAXDOP = 0;
+GO
+
+ALTER DATABASE SCOPED CONFIGURATION FOR SECONDARY SET MAXDOP = PRIMARY;
+GO
+
+ALTER DATABASE SCOPED CONFIGURATION SET PARAMETER_SNIFFING = ON;
+GO
+
+ALTER DATABASE SCOPED CONFIGURATION FOR SECONDARY SET PARAMETER_SNIFFING = PRIMARY;
+GO
+
+ALTER DATABASE SCOPED CONFIGURATION SET QUERY_OPTIMIZER_HOTFIXES = OFF;
+GO
+
+ALTER DATABASE SCOPED CONFIGURATION FOR SECONDARY SET QUERY_OPTIMIZER_HOTFIXES = PRIMARY;
+GO
+
+ALTER DATABASE [userdb] SET  READ_WRITE 
+GO
+
+USE [userdb]
+GO
+
+/****** Object:  Table [dbo].[User]    Script Date: 8/16/2018 9:43:43 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[User](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[first_name] [nvarchar](50) NULL,
+	[last_name] [nvarchar](50) NULL,
+	[age] [smallint] NULL,
+	[is_active] [bit] NOT NULL,
+ CONSTRAINT [PK_User] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+USE [userdb]
+GO
+
+/****** Object:  Table [dbo].[ContactInformation]    Script Date: 8/16/2018 9:45:01 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[ContactInformation](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[cell_phone1] [nchar](10) NULL,
+	[cell_phone2] [nchar](10) NULL,
+	[home_phone] [nchar](10) NULL,
+	[email] [nvarchar](50) NULL,
+	[preferred_method] [nchar](10) NULL,
+	[user_id] [int] NOT NULL,
+ CONSTRAINT [PK_ContactInformation] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[ContactInformation]  WITH CHECK ADD  CONSTRAINT [FK_ContactInformation_User] FOREIGN KEY([user_id])
+REFERENCES [dbo].[User] ([id])
+GO
+
+ALTER TABLE [dbo].[ContactInformation] CHECK CONSTRAINT [FK_ContactInformation_User]
+GO
+
+USE [userdb]
+GO
+
+/****** Object:  Table [dbo].[Employment]    Script Date: 8/16/2018 9:45:36 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Employment](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[name] [nchar](10) NULL,
+ CONSTRAINT [PK_Employment] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+USE [userdb]
+GO
+
+/****** Object:  Table [dbo].[User_Employment]    Script Date: 8/16/2018 9:45:59 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[User_Employment](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[user_id] [int] NOT NULL,
+	[employment_id] [int] NOT NULL,
+	[date_started] [date] NOT NULL,
+	[date_ended] [date] NULL,
+ CONSTRAINT [PK_User_Employment] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[User_Employment]  WITH CHECK ADD  CONSTRAINT [FK_User_Employment_Employment1] FOREIGN KEY([employment_id])
+REFERENCES [dbo].[Employment] ([id])
+GO
+
+ALTER TABLE [dbo].[User_Employment] CHECK CONSTRAINT [FK_User_Employment_Employment1]
+GO
+
+ALTER TABLE [dbo].[User_Employment]  WITH CHECK ADD  CONSTRAINT [FK_User_Employment_User1] FOREIGN KEY([user_id])
+REFERENCES [dbo].[User] ([id])
+GO
+
+ALTER TABLE [dbo].[User_Employment] CHECK CONSTRAINT [FK_User_Employment_User1]
+GO
+
+USE [userdb]
+GO
+
+/****** Object:  Table [dbo].[Note]    Script Date: 8/16/2018 9:46:43 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[Note](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[note] [text] NULL,
+	[user_id] [int] NOT NULL,
+ CONSTRAINT [PK_Note] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+ALTER TABLE [dbo].[Note]  WITH CHECK ADD  CONSTRAINT [FK_Note_User] FOREIGN KEY([user_id])
+REFERENCES [dbo].[User] ([id])
+GO
+
+ALTER TABLE [dbo].[Note] CHECK CONSTRAINT [FK_Note_User]
+GO
+
+USE [userdb]
+GO
+
+/****** Object:  Table [dbo].[AuditLog]    Script Date: 8/16/2018 9:50:04 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[AuditLog](
+	[id] [int] IDENTITY(1,1) NOT NULL,
+	[table_name] [varchar](50) NULL,
+	[change_made] [ntext] NULL,
+	[when_change_made] [datetime2](7) NULL,
+ CONSTRAINT [PK_AuditLog] PRIMARY KEY CLUSTERED 
+(
+	[id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+
+
+DECLARE @count int = 1
+WHILE @count < 1001
+BEGIN
+	INSERT INTO [User]
+	(first_name, last_name, is_active)
+	VALUES (CONCAT('FirstName ', @count), CONCAT('LastName ', @count), 1)
+	SET @count = @count + 1
+END
+
+SET @count = 1
+WHILE @count < 5
+BEGIN
+	INSERT INTO [Employment]
+	(name)
+	VALUES (CONCAT('Empl ', @count))
+	SET @count = @count + 1
+END
+
+SET @count = 1
+WHILE @count < 301
+BEGIN
+	INSERT INTO [User_Employment]
+	([user_id], [employment_id], [date_started], [date_ended])
+	VALUES (@count, 1, '2018-01-01', NULL)
+	SET @count = @count + 1
+END
+
+SET @count = 1
+WHILE @count < 301
+BEGIN
+	INSERT INTO [User_Employment]
+	([user_id], [employment_id], [date_started], [date_ended])
+	VALUES (@count, 2, '2017-01-01', '2017-12-12')
+	SET @count = @count + 1
+END
+
+SET @count = 1
+WHILE @count < 301
+BEGIN
+	INSERT INTO [User_Employment]
+	([user_id], [employment_id], [date_started], [date_ended])
+	VALUES (@count, 3, '2016-01-01', '2016-12-12')
+	SET @count = @count + 1
+END
+
+SET @count = 1
+WHILE @count < 301
+BEGIN
+	INSERT INTO [User_Employment]
+	([user_id], [employment_id], [date_started], [date_ended])
+	VALUES (@count, 4, '2015-01-01', '2015-12-12')
+	SET @count = @count + 1
+END
+
+SET @count = 1
+WHILE @count < 101
+BEGIN
+	INSERT INTO [ContactInformation]
+	([cell_phone1], [cell_phone2], user_id)
+	VALUES (CONCAT('555', @count), CONCAT('555', @count + 1), @count)
+	SET @count = @count + 1
+END
+ 
+SET @count = 102
+WHILE @count < 153
+BEGIN
+	INSERT INTO [ContactInformation]
+	([cell_phone1], [email], user_id)
+	VALUES (CONCAT('555', @count), CONCAT('email', @count, '@email.com'), @count)
+	SET @count = @count + 1
+END
+
+SET @count = 102
+WHILE @count < 153
+BEGIN
+	UPDATE [ContactInformation]
+	SET [preferred_method] =
+	CASE 
+		WHEN @count % 2 = 0 THEN 'email'
+		ELSE 'cell_phone'
+	END
+	SET @count = @count + 1
+END
+
+-- First name, Last Name, and Age
 SELECT first_name, last_name, age FROM [User]
 
--- 2
+-- First name, Last Name, Age, Cell Phone, Home Phone, Email (all available)
 SELECT first_name, last_name, age, cell_phone1, cell_phone2, email 
 FROM [User] JOIN ContactInformation ON [User].id = user_id
 
--- 3
+-- First name, Last Name, Age, Cell Phone, Home Phone, Email (only preferred contact)
 SELECT first_name, last_name, age, 
-	CASE WHEN preferred_method = 'email' THEN email
-	WHEN preferred_method = 'cell_phone' THEN cell_phone1
-	ELSE home_phone END as preferred_contact
-	FROM [User] JOIN ContactInformation ON [User].id = user_id
+	CASE 
+		WHEN preferred_method = 'email' THEN email
+		WHEN preferred_method = 'cell_phone' THEN cell_phone1
+		ELSE home_phone END as preferred_contact
+FROM [User] JOIN ContactInformation ON [User].id = user_id
 
--- 4
+-- Last Name, Employer, is current employed there
 SELECT [User].last_name, Employment.name,
 	CASE 
 		WHEN date_ended IS NULL THEN 'yes'
@@ -22,45 +414,39 @@ WHERE [User].id = User_Employment.user_id
 	AND Employment.id = User_Employment.employment_id
 ORDER BY [User].id
 
--- 5
+-- Only records with a matching First Name and Last Name
 SELECT first_name, last_name, age FROM [User]
-	WHERE first_name = 'FirstName3' AND last_name = 'LastName3'
+	WHERE first_name = 'FirstName 3' AND last_name = 'LastName 3'
 
--- 6
+-- Only records with a matching Cell Phone Number
 SELECT first_name, last_name, age, cell_phone1, cell_phone2, email 
 FROM [User] JOIN ContactInformation ON [User].id = user_id
-WHERE cell_phone1 = '1234562001'
+WHERE cell_phone1 = '555111'
 
--- 7
-[This one has already been done, three queries back.]
+-- Only records with an Employer at some point
+-- [This is the same as three queries previously.]
+SELECT [User].last_name, Employment.name,
+	CASE 
+		WHEN date_ended IS NULL THEN 'yes'
+		ELSE 'no' END as currently_employed
+FROM [User], Employment, User_Employment
+WHERE [User].id = User_Employment.user_id
+	AND Employment.id = User_Employment.employment_id
+ORDER BY [User].id, Employment.id
 
--- 8
+-- Only records with a primary contact method
 SELECT first_name, last_name, age, cell_phone1, cell_phone2, email, ContactInformation.id, preferred_method 
 FROM [User] JOIN ContactInformation ON [User].id = user_id
 WHERE preferred_method IS NOT NULL
 
--- 9
-SELECT [User].last_name, Employment.name
-FROM [User] 
+-- Only records with a current Employer
+SELECT [User].last_name, Employment.name,
+	CASE 
+		WHEN date_ended IS NULL THEN 'yes'
+		ELSE 'no' END as currently_employed
+FROM [User]
 	JOIN User_Employment ON [User].id = user_id
 	JOIN Employment ON User_Employment.employment_id = Employment.id
-
--- 10
-CREATE DATABASE userdb1;
-
-GO
-
-USE userdb1;
-
-CREATE TABLE [User] (
-    id int IDENTITY(1,1) PRIMARY KEY,
-    first_name nvarchar(255) NOT NULL,
-    last_name nvarchar(255),
-    age int
-);
-
-INSERT INTO [User] (first_name, last_name, age)
-VALUES ('Peter', 'Slavin', 51);
-
-SELECT * FROM [User]
-
+WHERE [User].id = User_Employment.user_id
+	AND Employment.id = User_Employment.employment_id
+ORDER BY [User].id, Employment.id
