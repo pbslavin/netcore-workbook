@@ -1,0 +1,28 @@
+﻿@{
+    ViewData["Title"] = "Appointments";
+}
+
+<h2>Appointments by Day for @ViewData["ServiceProvider"]</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var a in ViewData["ServiceProviderAppointments"] as List<Appointment>)
+        {
+            <tr>
+                <td>
+                    <h3>@a.CustomerFullName on @a.Day at @a.Time</h3>
+                    <br />
+                    @Html.ActionLink("Delete", "Delete", new { id = a.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,30 @@
+﻿@model IEnumerable<Checkpoint1.Models.ServiceProvider>
+
+@{
+    ViewData["Title"] = "ServiceProviders";
+}
+
+<h2>ServiceProviders</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (Checkpoint1.Models.ServiceProvider s in Model) {
+        <tr>
+            <td>
+                <h3>@Html.ActionLink(@s.FullName, "Appointments", new { id = s.Id })</h3>
+                @*<a asp-action="Appointments"><h3>@s.FullName</h3></a>*@
+                <br />
+                @Html.ActionLink("Delete", "Delete", new { id = s.Id })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
