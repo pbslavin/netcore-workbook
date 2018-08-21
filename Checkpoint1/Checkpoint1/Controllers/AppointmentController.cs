@@ -25,8 +25,15 @@ namespace Checkpoint1.Controllers
         [HttpPost]
         public IActionResult Create(Appointment appointment)
         {
-            _repository.BookAppointment(appointment);
-            return View("Index", _repository.Appointments);
+            try
+            {
+                _repository.BookAppointment(appointment);
+                return View("Index", _repository.Appointments);
+            }
+            catch
+            {
+                return View("Index", _repository.Appointments);
+            }
         }
 
         public IActionResult Delete(Appointment appointment)

@@ -1,4 +1,6 @@
-﻿@{
+﻿@model Checkpoint1.Models.Appointment
+
+@{
     ViewData["Title"] = "Appointments";
 }
 
@@ -16,9 +18,17 @@
     <tbody>
         @foreach (var a in ViewData["ServiceProviderAppointments"] as List<Appointment>)
         {
-            <tr>
+        <tr>
+            @if (a.Day != day)
+            {
+                <td>
+                    a.Day
+                </td>
+                day = a.Day;
+            }
                 <td>
                     <h3>@a.CustomerFullName on @a.Day at @a.Time</h3>
+                    @
                     <br />
                     @Html.ActionLink("Delete", "Delete", new { id = a.Id })
                 </td>

@@ -47,8 +47,8 @@ namespace Checkpoint1.Controllers
                 {
                     ServiceProviderAppointments.Add(a);
                 }
-            ViewData["ServiceProviderAppointments"] = ServiceProviderAppointments.OrderBy(sp => sp.Day);
-            ViewData["ServiceProvider"] = CurrentServiceProvider;
+            ViewData["ServiceProviderAppointments"] = ServiceProviderAppointments;
+            ViewData["ServiceProvider"] = CurrentServiceProvider.FullName;
             return View("Appointments");
         }
     }

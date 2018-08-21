@@ -6,6 +6,8 @@ namespace Checkpoint1.Models
 {
     public class Appointment
     {
+        public enum Days { Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday };
+        public enum Times { Nine, Ten, Eleven, Noon, One, Two, Three, Four, Five };
         public Appointment()
         {
             Id = Guid.NewGuid();
@@ -17,9 +19,9 @@ namespace Checkpoint1.Models
 
         public string CustomerFullName { get; set; }
 
-        public string Day { get; set; }
+        public Days Day { get; set; }
 
-        public int Time { get; set; }
+        public Times Time { get; set; }
 
 
     }
