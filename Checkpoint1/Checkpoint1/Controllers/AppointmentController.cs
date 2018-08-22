@@ -7,6 +7,7 @@ namespace Checkpoint1.Controllers
     public class AppointmentController : Controller
     {
         private readonly IRepository _repository;
+
         public AppointmentController(IRepository repository)
         {
             _repository = repository;
