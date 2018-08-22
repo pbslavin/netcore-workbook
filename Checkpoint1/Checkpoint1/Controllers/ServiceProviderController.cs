@@ -1,7 +1,7 @@
 ﻿using Checkpoint1.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Checkpoint1.Controllers
 {
@@ -40,14 +40,16 @@ namespace Checkpoint1.Controllers
         }
 
         public IActionResult Appointments(ServiceProvider serviceProvider)
-        {
+        {   // Displays list of appointments grouped by day for a single service provider.
             var CurrentServiceProvider = _repository.ServiceProviders.Single(r => r.Id == serviceProvider.Id);
+
             List<Appointment> ServiceProviderAppointments = new List<Appointment>();
             foreach (Appointment a in _repository.Appointments)
                 if (a.ServiceProviderFullName == CurrentServiceProvider.FullName)
                 {
                     ServiceProviderAppointments.Add(a);
                 }
+
             ViewData["ServiceProviderAppointments"] = ServiceProviderAppointments;
             ViewData["ServiceProvider"] = CurrentServiceProvider.FullName;
             return View("Appointments");

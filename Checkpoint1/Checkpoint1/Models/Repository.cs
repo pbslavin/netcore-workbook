@@ -16,12 +16,14 @@ namespace Checkpoint1.Models
             {
             }
         }
+
         public class InvalidCustomerException : Exception
         {
             public InvalidCustomerException(string message) : base(message)
             {
             }
         }
+
         public class InvalidServiceProviderException : Exception
         {
             public InvalidServiceProviderException(string message) : base(message)
@@ -49,21 +51,25 @@ namespace Checkpoint1.Models
         {
             List<Appointment> appointments = this.Appointments;
 
+            // Appointment is invalid if either customer or service provider has an appointment at the same time on the same day.
             var isInvalidAppointment = appointments.Any(a => ((a.CustomerFullName == appointment.CustomerFullName
                 || a.ServiceProviderFullName == appointment.ServiceProviderFullName)
                 && a.Time == appointment.Time && a.Day == appointment.Day));
             if (isInvalidAppointment)
                 throw new InvalidAppointmentException("Invalid Appointment");
+
             var isValidCustomer = Customers.Any(c => c.FullName == appointment.CustomerFullName);
             if (!isValidCustomer)
             {
                 throw new InvalidCustomerException("Invalid Customer");
             }
+
             var isValidServiceProvider = ServiceProviders.Any(c => c.FullName == appointment.ServiceProviderFullName);
             if (!isValidServiceProvider)
             {
                 throw new InvalidServiceProviderException("Invalid Service Provider");
             }
+            // if all is valid, save appointment to Appointments list.
             this.AddAppointment(appointment);
         }
     }

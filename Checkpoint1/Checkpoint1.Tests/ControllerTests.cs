@@ -1,30 +1,31 @@
 using Checkpoint1.Models;
-using Checkpoint1.Controllers;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Xunit;
-using System.Collections.Generic;
 
 namespace Checkpoint1.Tests.Controllers
 {
     public class MyMockedRepository : IRepository
     {
-        public List<Customer> Customers { get; set;  } = new List<Customer>();
+        public List<Customer> Customers { get; set; } = new List<Customer>();
         public List<ServiceProvider> ServiceProviders { get; set; } = new List<ServiceProvider>();
-        public List<Appointment> Appointments { get; set;  } = new List<Appointment>();
-        
+        public List<Appointment> Appointments { get; set; } = new List<Appointment>();
+
         public class InvalidAppointmentException : Exception
         {
             public InvalidAppointmentException(string message) : base(message)
             {
             }
         }
+
         public class InvalidCustomerException : Exception
         {
             public InvalidCustomerException(string message) : base(message)
             {
             }
         }
+
         public class InvalidServiceProviderException : Exception
         {
             public InvalidServiceProviderException(string message) : base(message)
@@ -56,11 +57,13 @@ namespace Checkpoint1.Tests.Controllers
                 && a.Time == appointment.Time && a.Day == appointment.Day));
             if (isInvalidAppointment)
                 throw new InvalidAppointmentException("Invalid Appointment");
+
             var isValidCustomer = Customers.Any(c => c.FullName == appointment.CustomerFullName);
             if (!isValidCustomer)
             {
                 throw new InvalidCustomerException("Invalid Customer");
             }
+
             var isValidServiceProvider = ServiceProviders.Any(c => c.FullName == appointment.ServiceProviderFullName);
             if (!isValidServiceProvider)
             {
@@ -69,6 +72,7 @@ namespace Checkpoint1.Tests.Controllers
             this.AddAppointment(appointment);
         }
     }
+
     public class ControllerTests
     {
         [Fact]
