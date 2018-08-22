@@ -30,14 +30,13 @@ namespace Checkpoint1.Models
         {
             public InvalidAppointmentException(string message) : base(message)
             {
-
             }
         }
+
         public class InvalidCustomerException : Exception
         {
             public InvalidCustomerException(string message) : base(message)
             {
-
             }
         }
 
@@ -45,7 +44,6 @@ namespace Checkpoint1.Models
         {
             public InvalidServiceProviderException(string message) : base(message)
             {
-
             }
         }
 
@@ -71,5 +69,4 @@ namespace Checkpoint1.Models
             this.AddAppointment(appointment);
         }
     }
-        
 }

@@ -1,5 +1,3 @@
-using System;
-
 namespace Checkpoint1.Models
 {
     public class ErrorViewModel

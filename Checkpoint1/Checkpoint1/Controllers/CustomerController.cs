@@ -6,13 +6,13 @@ namespace Checkpoint1.Controllers
 {
     public class CustomerController : Controller
     {
-
         private Repository _repository;
 
         public CustomerController(Repository repository)
         {
             _repository = repository;
         }
+
         public IActionResult Index()
         {
             return View(_repository.Customers);

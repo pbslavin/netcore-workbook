@@ -4,10 +4,10 @@
     ViewData["Title"] = "Appointments";
 }
 
-<h2>Appointments by Day for @ViewData["ServiceProvider"]</h2>
+<h2>Appointments for @ViewData["ServiceProvider"]</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-controller="Appointment" asp-action="Create">Create New Appointment</a>
 </p>
 <table class="table">
     <thead>
@@ -16,23 +16,22 @@
         </tr>
     </thead>
     <tbody>
+        @{ Appointment.Days day = (Appointment.Days)7; }
         @foreach (var a in ViewData["ServiceProviderAppointments"] as List<Appointment>)
         {
-        <tr>
-            @if (a.Day != day)
-            {
+            <tr>
                 <td>
-                    a.Day
+                    @{ if (a.Day != day)
+                        {
+                            <h3>@a.Day</h3>
+                        }
+                    }
                 </td>
-                day = a.Day;
-            }
                 <td>
-                    <h3>@a.CustomerFullName on @a.Day at @a.Time</h3>
-                    @
-                    <br />
-                    @Html.ActionLink("Delete", "Delete", new { id = a.Id })
+                    <h3>@a.CustomerFullName at @a.Time</h3>
                 </td>
             </tr>
+            day = a.Day;
         }
     </tbody>
 </table>

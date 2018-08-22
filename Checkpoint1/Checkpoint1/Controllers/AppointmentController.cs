@@ -7,10 +7,12 @@ namespace Checkpoint1.Controllers
     public class AppointmentController : Controller
     {
         private Repository _repository;
+
         public AppointmentController(Repository repository)
         {
             _repository = repository;
         }
+
         public IActionResult Index()
         {
             return View(_repository.Appointments);

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Checkpoint1.Models;
 using Microsoft.AspNetCore.Mvc;
-using Checkpoint1.Models;
+using System.Diagnostics;
 
 namespace Checkpoint1.Controllers
 {
