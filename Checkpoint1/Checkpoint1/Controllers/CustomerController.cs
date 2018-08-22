@@ -6,9 +6,9 @@ namespace Checkpoint1.Controllers
 {
     public class CustomerController : Controller
     {
-        private Repository _repository;
+        private readonly IRepository _repository;
 
-        public CustomerController(Repository repository)
+        public CustomerController(IRepository repository)
         {
             _repository = repository;
         }

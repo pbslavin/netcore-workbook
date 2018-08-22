@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Checkpoint1.Models
 {
-    public class Repository
+    public class Repository : IRepository
     {
         public List<Customer> Customers { get; } = new List<Customer>();
         public List<ServiceProvider> ServiceProviders { get; } = new List<ServiceProvider>();
