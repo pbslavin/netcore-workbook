@@ -1,4 +1,5 @@
 using Checkpoint1.Models;
+using Checkpoint1.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -85,9 +86,10 @@ namespace Checkpoint1.Tests.Controllers
                 FirstName = "Peter",
                 LastName = "Slavin"
             };
+            CustomerController controller = new CustomerController(mockRepository);
 
             // Act
-            mockRepository.AddCustomer(customer);
+            controller.Create(customer);
 
             // Assert
             Assert.NotEmpty(mockRepository.Customers);
@@ -103,16 +105,17 @@ namespace Checkpoint1.Tests.Controllers
                 FirstName = "Peter",
                 LastName = "Slavin"
             };
+            ServiceProviderController controller = new ServiceProviderController(mockRepository);
 
             // Act
-            mockRepository.AddServiceProvider(serviceProvider);
+            controller.Create(serviceProvider);
 
             // Assert
             Assert.NotEmpty(mockRepository.ServiceProviders);
         }
 
         [Fact]
-        public void Appointment_ShouldAddAppointment()
+        public void Appointment_ShouldDeleteAppointment()
         {
             // Assemble
             var mockRepository = new MyMockedRepository();
@@ -123,14 +126,19 @@ namespace Checkpoint1.Tests.Controllers
                 Day = 0,
                 Time = 0
             };
+            mockRepository.AddAppointment(appointment);
+            AppointmentController controller = new AppointmentController(mockRepository);
 
             // Act
-            mockRepository.AddAppointment(appointment);
+            controller.Delete(appointment);
 
             // Assert
-            Assert.NotEmpty(mockRepository.Appointments);
+            Assert.Empty(mockRepository.Appointments);
         }
+    }
 
+    public class RepositoryTest
+    {
         [Fact]
         public void Repository_ShouldBookAppointments()
         {
