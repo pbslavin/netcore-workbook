@@ -34,6 +34,7 @@ namespace Checkpoint1.Controllers
             }
             catch
             {
+                ViewBag.message = "That is not a valid appointment; please try again.";
                 return View("Index", _repository.Appointments);
             }
         }

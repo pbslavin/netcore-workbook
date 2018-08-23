@@ -16,7 +16,8 @@
         </tr>
     </thead>
     <tbody>
-        @{ Appointment.Days day = (Appointment.Days)7; } @*Initialize day variable day outside range of Days enum.*@
+        @*Initialize day out of the range of the enum, so that the condition evaluates to 'false' the first time.*@
+        @{ Appointment.Days day = (Appointment.Days)7; }
         @foreach (var a in ViewData["ServiceProviderAppointments"] as List<Appointment>)
         {
             <tr>
@@ -32,7 +33,8 @@
                     <h3>@a.CustomerFullName at @a.Time</h3>
                 </td>
             </tr>
-            day = a.Day; @*Set day variable equal to current day.*@
+            @*Set day to that of current appointment in list.*@
+            day = a.Day;
         }
     </tbody>
 </table>
