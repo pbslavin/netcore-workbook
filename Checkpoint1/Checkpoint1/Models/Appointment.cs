@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Checkpoint1.Models
 {
@@ -13,14 +14,11 @@ namespace Checkpoint1.Models
             Id = Guid.NewGuid();
         }
 
+        [Key]
         public Guid Id { get; set; }
-
         public string ServiceProviderFullName { get; set; }
-
         public string CustomerFullName { get; set; }
-
         public Days Day { get; set; }
-
         public Times Time { get; set; }
     }
 }
