@@ -1,4 +1,5 @@
 ﻿using BaseProject.Data;
+using BaseProject.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -51,6 +52,10 @@ namespace BaseProject
             using (var serviceScope = scopeFactory.CreateScope())
             {
                 using (var context = serviceScope.ServiceProvider.GetService<ApplicationContext>())
+                {
+                    context.Database.Migrate();
+                }
+                using (var context = serviceScope.ServiceProvider.GetService<MyIdentityContext>())
                 {
                     context.Database.Migrate();
                 }

@@ -21,7 +21,19 @@ namespace Checkpoint1.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            bool hasCusts = _repository.Customers.Any();
+            bool hasServProvs = _repository.ServiceProviders.Any();
+            if (hasCusts && hasServProvs)
+            {
+                ViewData["Customers"] = _repository.Customers;
+                ViewData["ServiceProviders"] = _repository.ServiceProviders;
+                return View();
+            }
+            else
+            {
+                ViewBag.message = "You must create at least one customer and one service provider.";
+                return View("Index", _repository.Appointments);
+            }
         }
 
         [HttpPost]
@@ -34,7 +46,7 @@ namespace Checkpoint1.Controllers
             }
             catch
             {
-                ViewBag.message = "That is not a valid appointment; please try again.";
+                ViewBag.message = "That appointment is not available.";
                 return View("Index", _repository.Appointments);
             }
         }

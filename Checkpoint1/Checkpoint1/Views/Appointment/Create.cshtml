@@ -12,11 +12,21 @@
         <form asp-action="Create">
             <div class="form-group">
                 <label asp-for="ServiceProviderFullName" class="control-label"></label>
-                <input asp-for="ServiceProviderFullName" class="form-control" />
+                <select asp-for="ServiceProviderFullName" class="form-control">
+                    @foreach (var serviceProvider in ViewData["ServiceProviders"] as List<ServiceProvider>)
+                    {
+                        <option value=@serviceProvider.FullName>@serviceProvider.FullName</option>
+                    }
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="CustomerFullName" class="control-label"></label>
-                <input asp-for="CustomerFullName" class="form-control" />
+                <select asp-for="ServiceProviderFullName" class="form-control">
+                    @foreach (var customer in ViewData["Customers"] as List<Customer>)
+                    {
+                        <option value=@customer.FullName>@customer.FullName</option>
+                    }
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="Day" class="control-label"></label>
