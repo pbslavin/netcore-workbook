@@ -19,11 +19,11 @@
 @foreach (Checkpoint1.Models.ServiceProvider s in Model) {
         <tr>
             <td>
-                <h3>@Html.ActionLink(@s.FullName, "Appointments", new { id = s.Id })</h3>
+                <h3>@Html.ActionLink(@s.FullName, "AppointmentSummary", new { ServiceProviderId = s.ServiceProviderId })</h3>
                 <br />
-                @Html.ActionLink("Delete", "Delete", new { id = s.Id })
+                @Html.ActionLink("Delete", "Delete", new { ServiceProviderId = s.ServiceProviderId })
             </td>
         </tr>
 }
     </tbody>
-</table>
+</table> 

@@ -21,7 +21,7 @@
 @foreach (Checkpoint1.Models.Appointment a in Model) {
         <tr>
             <td>
-                <h3>@a.CustomerFullName on @a.Day at @a.Time with @a.ServiceProviderFullName</h3>
+                <h3>@a.Customer.FullName on @a.Day at @a.Time with @a.ServiceProvider.FullName</h3>
                 <br />
                 @Html.ActionLink("Delete", "Delete", new { id=a.Id })
             </td>

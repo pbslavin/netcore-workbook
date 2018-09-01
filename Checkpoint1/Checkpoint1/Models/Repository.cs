@@ -17,19 +17,19 @@ namespace Checkpoint1.Models
             }
         }
 
-        public class InvalidCustomerException : Exception
-        {
-            public InvalidCustomerException(string message) : base(message)
-            {
-            }
-        }
+        ////public class InvalidCustomerException : Exception
+        ////{
+        ////    public InvalidCustomerException(string message) : base(message)
+        ////    {
+        ////    }
+        ////}
 
-        public class InvalidServiceProviderException : Exception
-        {
-            public InvalidServiceProviderException(string message) : base(message)
-            {
-            }
-        }
+        ////public class InvalidServiceProviderException : Exception
+        ////{
+        ////    public InvalidServiceProviderException(string message) : base(message)
+        ////    {
+        ////    }
+        ////}
 
         public void AddCustomer(Customer customer)
         {
@@ -43,6 +43,8 @@ namespace Checkpoint1.Models
 
         public void AddAppointment(Appointment appointment)
         {
+            appointment.Customer = Customers.Find(c => c.CustomerId == appointment.CustomerId);
+            appointment.ServiceProvider = ServiceProviders.Find(s => s.ServiceProviderId == appointment.ServiceProviderId);
             Appointments.Add(appointment);
             Appointments = Appointments.OrderBy(a => a.Day).ThenBy(a => a.Time).ToList();
         }
@@ -52,23 +54,23 @@ namespace Checkpoint1.Models
             List<Appointment> appointments = this.Appointments;
 
             // Appointment is invalid if either customer or service provider has an appointment at the same time on the same day.
-            var isInvalidAppointment = appointments.Any(a => ((a.CustomerFullName == appointment.CustomerFullName
-                || a.ServiceProviderFullName == appointment.ServiceProviderFullName)
+            var isInvalidAppointment = appointments.Any(a => ((a.CustomerId == appointment.CustomerId
+                || a.ServiceProviderId == appointment.ServiceProviderId)
                 && a.Time == appointment.Time && a.Day == appointment.Day));
             if (isInvalidAppointment)
                 throw new InvalidAppointmentException("Invalid Appointment");
 
-            var isValidCustomer = Customers.Any(c => c.FullName == appointment.CustomerFullName);
-            if (!isValidCustomer)
-            {
-                throw new InvalidCustomerException("Invalid Customer");
-            }
+            ////var isValidCustomer = Customers.Any(c => c.FullName == appointment.Customer.FullName);
+            ////if (!isValidCustomer)
+            ////{
+            ////    throw new InvalidCustomerException("Invalid Customer");
+            ////}
 
-            var isValidServiceProvider = ServiceProviders.Any(c => c.FullName == appointment.ServiceProviderFullName);
-            if (!isValidServiceProvider)
-            {
-                throw new InvalidServiceProviderException("Invalid Service Provider");
-            }
+            ////var isValidServiceProvider = ServiceProviders.Any(c => c.FullName == appointment.ServiceProvider.FullName);
+            ////if (!isValidServiceProvider)
+            ////{
+            ////    throw new InvalidServiceProviderException("Invalid Service Provider");
+            ////}
             // if all is valid, save appointment to Appointments list.
             this.AddAppointment(appointment);
         }

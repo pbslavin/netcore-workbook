@@ -43,6 +43,8 @@ namespace BaseProject
             app.UseStaticFiles();
 
             app.UseMvc();
+            
+            app.UseAuthentication();
         }
 
         private void EnsureDatabaseUpdated(IApplicationBuilder app)

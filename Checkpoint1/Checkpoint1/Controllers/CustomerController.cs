@@ -33,7 +33,7 @@ namespace Checkpoint1.Controllers
 
         public IActionResult Delete(Customer customer)
         {
-            var itemToRemove = _repository.Customers.Single(r => r.Id == customer.Id);
+            var itemToRemove = _repository.Customers.Single(r => r.CustomerId == customer.CustomerId);
             _repository.Customers.Remove(itemToRemove);
             return View("Index", _repository.Customers);
         }

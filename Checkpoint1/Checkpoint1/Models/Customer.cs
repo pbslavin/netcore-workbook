@@ -7,11 +7,11 @@ namespace Checkpoint1.Models
     {
         public Customer()
         {
-            Id = Guid.NewGuid();
+            CustomerId = Guid.NewGuid();
         }
 
         [Key]
-        public Guid Id { get; set; }
+        public Guid CustomerId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string FullName

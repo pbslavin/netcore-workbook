@@ -29,7 +29,7 @@ namespace Checkpoint1
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            services.AddDbContext<ApplicationContext>(opts => opts.UseSqlServer(Configuration.GetConnectionString("Checkpoint1Docker")));
+            services.AddDbContext<ApplicationContext>(opts => opts.UseSqlServer(Configuration.GetConnectionString("Checkpoint1")));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddSingleton<IRepository>(new Repository());
         }
@@ -37,6 +37,8 @@ namespace Checkpoint1
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            EnsureDatabaseUpdated(app);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -55,6 +57,17 @@ namespace Checkpoint1
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+        }
+        private void EnsureDatabaseUpdated(IApplicationBuilder app)
+        {
+            var scopeFactory = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>();
+            using (var serviceScope = scopeFactory.CreateScope())
+            {
+                using (var context = serviceScope.ServiceProvider.GetService<ApplicationContext>())
+                {
+                    context.Database.Migrate();
+                }
+            }
         }
     }
 }

@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace BaseProject.Migrations
+namespace BaseProject.Migrations.Application
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20180826170943_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20180831005934_addIssue")]
+    partial class addIssue
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

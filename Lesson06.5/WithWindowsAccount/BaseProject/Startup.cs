@@ -1,4 +1,4 @@
-﻿using BaseProject.Areas.Identity.Data;
+﻿ using BaseProject.Areas.Identity.Data;
 using BaseProject.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

@@ -16,9 +16,12 @@ namespace Checkpoint1.Models
 
         [Key]
         public Guid Id { get; set; }
-        public string ServiceProviderFullName { get; set; }
-        public string CustomerFullName { get; set; }
         public Days Day { get; set; }
         public Times Time { get; set; }
+
+        public Guid ServiceProviderId { get; set; }
+        public ServiceProvider ServiceProvider { get; set; }
+        public Guid CustomerId { get; set; }
+        public Customer Customer { get; set; }
     }
 }

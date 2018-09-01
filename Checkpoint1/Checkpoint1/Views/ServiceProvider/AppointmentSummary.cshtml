@@ -1,7 +1,7 @@
 ﻿@model Checkpoint1.Models.Appointment
 
 @{
-    ViewData["Title"] = "Appointments";
+    ViewData["Title"] = "Appointment Summary";
 }
 
 <h2>Appointments for @ViewData["ServiceProvider"]</h2>
@@ -30,7 +30,7 @@
                     }
                 </td>
                 <td>
-                    <h3>@a.CustomerFullName at @a.Time</h3>
+                    <h3>@a.Customer.FullName at @a.Time</h3>
                 </td>
             </tr>
             @*Set day to that of current appointment in list.*@
