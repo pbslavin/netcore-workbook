@@ -1,22 +1,27 @@
-﻿using Checkpoint1.Models;
+﻿using Checkpoint1.Data;
+using Checkpoint1.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Checkpoint1.Controllers
 {
     public class ServiceProviderController : Controller
     {
         private readonly IRepository _repository;
+        private readonly ApplicationContext _context;
 
-        public ServiceProviderController(IRepository repository)
+        public ServiceProviderController(ApplicationContext context, IRepository repository)
         {
+            _context = context;
             _repository = repository;
         }
 
         public IActionResult Index()
         {
-            return View(_repository.ServiceProviders);
+            return View(_context.ServiceProviders);
         }
 
         [HttpGet]
@@ -26,32 +31,37 @@ namespace Checkpoint1.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(ServiceProvider serviceProvider)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("ServiceProviderId,FirstName,LastName")] ServiceProvider serviceProvider)
         {
-            _repository.AddServiceProvider(serviceProvider);
-            return View("Index", _repository.ServiceProviders);
+            _context.Add(serviceProvider);
+            await _context.SaveChangesAsync();
+            //_repository.AddServiceProvider(serviceProvider);
+            return View("Index", _context.ServiceProviders);
         }
 
-        public IActionResult Delete(ServiceProvider serviceProvider)
+        public async Task<IActionResult> Delete(ServiceProvider serviceProvider)
         {
-            var itemToRemove = _repository.ServiceProviders.Single(s => s.ServiceProviderId == serviceProvider.ServiceProviderId);
-            _repository.ServiceProviders.Remove(itemToRemove);
-            return View("Index", _repository.ServiceProviders);
+            var itemToRemove = await _context.ServiceProviders.FindAsync(serviceProvider.ServiceProviderId);
+            _context.ServiceProviders.Remove(itemToRemove);
+            await _context.SaveChangesAsync();
+            return View("Index", _context.ServiceProviders);
         }
 
-        public IActionResult AppointmentSummary(ServiceProvider serviceProvider)
+        public async Task<IActionResult> AppointmentSummary(ServiceProvider serviceProvider)
         {   // Displays list of appointments grouped by day for a single service provider.
-            var CurrentServiceProvider = _repository.ServiceProviders.Single(s => s.ServiceProviderId == serviceProvider.ServiceProviderId);
+            var CurrentServiceProvider = _context.ServiceProviders.Single(s => s.ServiceProviderId == serviceProvider.ServiceProviderId);
 
             List<Appointment> ServiceProviderAppointments = new List<Appointment>();
-            foreach (Appointment a in _repository.Appointments)
-                if (a.ServiceProvider.FullName == CurrentServiceProvider.FullName)
+            foreach (Appointment a in _context.Appointments)
+                if (a.ServiceProviderId == CurrentServiceProvider.ServiceProviderId)
                 {
                     ServiceProviderAppointments.Add(a);
                 }
 
-            ViewData["ServiceProviderAppointments"] = ServiceProviderAppointments;
+            ViewData["ServiceProviderAppointments"] = ServiceProviderAppointments.OrderBy(a => a.Day).ToList();
             ViewData["ServiceProvider"] = CurrentServiceProvider.FullName;
+            ViewData["Customers"] = await _context.Customers.ToListAsync();
             return View("AppointmentSummary");
         }
     }

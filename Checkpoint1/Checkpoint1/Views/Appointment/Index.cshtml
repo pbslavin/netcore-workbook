@@ -18,12 +18,19 @@
         </tr>
     </thead>
     <tbody>
-@foreach (Checkpoint1.Models.Appointment a in Model) {
+@foreach (var a in Model) {
+    @foreach (var c in ViewData["Customers"] as List<Customer>)
+    {
+        if (c.CustomerId == a.CustomerId)
+        {
+            a.Customer = c;
+        }
+    }
         <tr>
             <td>
-                <h3>@a.Customer.FullName on @a.Day at @a.Time with @a.ServiceProvider.FullName</h3>
+                <h3>@Html.DisplayFor(modelItem => a.Customer.FullName) on @Html.DisplayFor(modelItem => a.Day) at @Html.DisplayFor(modelItem => a.Time) with @Html.DisplayFor(modelItem => a.ServiceProvider.FullName)</h3>
                 <br />
-                @Html.ActionLink("Delete", "Delete", new { id=a.Id })
+                @Html.ActionLink("Delete", "Delete", new { AppointmentId = a.AppointmentId })
             </td>
         </tr>
 }

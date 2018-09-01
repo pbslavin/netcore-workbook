@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Checkpoint1.Models
@@ -9,8 +10,7 @@ namespace Checkpoint1.Models
         {
             CustomerId = Guid.NewGuid();
         }
-
-        [Key]
+        
         public Guid CustomerId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -21,5 +21,7 @@ namespace Checkpoint1.Models
                 return FirstName + " " + LastName;
             }
         }
+
+        public ICollection<Appointment> Appointments { get; set; }
     }
 }

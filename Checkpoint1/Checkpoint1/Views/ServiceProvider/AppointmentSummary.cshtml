@@ -20,6 +20,13 @@
         @{ Appointment.Days day = (Appointment.Days)7; }
         @foreach (var a in ViewData["ServiceProviderAppointments"] as List<Appointment>)
         {
+            @foreach (var c in ViewData["Customers"] as List<Customer>)
+            {
+                if (c.CustomerId == a.CustomerId)
+                {
+                    a.Customer = c;
+                }
+            }
             <tr>
                 <td>
                     @*Display day only if it changes.*@

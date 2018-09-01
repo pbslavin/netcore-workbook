@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Checkpoint1.Data;
 
 namespace Checkpoint1.Models
 {
@@ -16,20 +17,6 @@ namespace Checkpoint1.Models
             {
             }
         }
-
-        ////public class InvalidCustomerException : Exception
-        ////{
-        ////    public InvalidCustomerException(string message) : base(message)
-        ////    {
-        ////    }
-        ////}
-
-        ////public class InvalidServiceProviderException : Exception
-        ////{
-        ////    public InvalidServiceProviderException(string message) : base(message)
-        ////    {
-        ////    }
-        ////}
 
         public void AddCustomer(Customer customer)
         {
@@ -60,19 +47,9 @@ namespace Checkpoint1.Models
             if (isInvalidAppointment)
                 throw new InvalidAppointmentException("Invalid Appointment");
 
-            ////var isValidCustomer = Customers.Any(c => c.FullName == appointment.Customer.FullName);
-            ////if (!isValidCustomer)
-            ////{
-            ////    throw new InvalidCustomerException("Invalid Customer");
-            ////}
-
-            ////var isValidServiceProvider = ServiceProviders.Any(c => c.FullName == appointment.ServiceProvider.FullName);
-            ////if (!isValidServiceProvider)
-            ////{
-            ////    throw new InvalidServiceProviderException("Invalid Service Provider");
-            ////}
-            // if all is valid, save appointment to Appointments list.
-            this.AddAppointment(appointment);
+            //// if all is valid, save appointment to Appointments list.
+            ////this.AddAppointment(appointment);
+            return;
         }
     }
 }

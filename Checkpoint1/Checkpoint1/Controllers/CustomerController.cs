@@ -1,21 +1,25 @@
-﻿using Checkpoint1.Models;
+﻿using Checkpoint1.Data;
+using Checkpoint1.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Checkpoint1.Controllers
 {
     public class CustomerController : Controller
     {
         private readonly IRepository _repository;
+        private readonly ApplicationContext _context;
 
-        public CustomerController(IRepository repository)
+        public CustomerController(ApplicationContext context, IRepository repository)
         {
+            _context = context;
             _repository = repository;
         }
 
         public IActionResult Index()
         {
-            return View(_repository.Customers);
+            return View(_context.Customers);
         }
 
         [HttpGet]
@@ -25,17 +29,46 @@ namespace Checkpoint1.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Customer customer)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("CustomerId,FirstName,LastName")] Customer customer)
         {
-            _repository.AddCustomer(customer);
-            return View("Index", _repository.Customers);
+            _context.Add(customer);
+            await _context.SaveChangesAsync();
+            //_repository.AddCustomer(customer);
+            return View("Index", _context.Customers);
         }
 
-        public IActionResult Delete(Customer customer)
+        //[HttpPost]
+        //[Route("Create")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("Id,Title,Description,Status")] Issue issue)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _context.Add(issue);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    return View(issue);
+        //}
+
+
+        public async Task<IActionResult> Delete(Customer customer)
         {
-            var itemToRemove = _repository.Customers.Single(r => r.CustomerId == customer.CustomerId);
-            _repository.Customers.Remove(itemToRemove);
-            return View("Index", _repository.Customers);
+            var itemToRemove = await _context.Customers.FindAsync(customer.CustomerId);
+            _context.Customers.Remove(itemToRemove);
+            await _context.SaveChangesAsync();
+            return View("Index", _context.Customers);
         }
+
+        //[HttpPost, ActionName("Delete")]
+        //[Route("Delete/{id:int}")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeleteConfirmed(int id)
+        //{
+        //    var issue = await _context.Issues.FindAsync(id);
+        //    _context.Issues.Remove(issue);
+        //    await _context.SaveChangesAsync();
+        //    return RedirectToAction(nameof(Index));
     }
 }

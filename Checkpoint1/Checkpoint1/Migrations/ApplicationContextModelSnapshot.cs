@@ -21,48 +21,65 @@ namespace Checkpoint1.Migrations
 
             modelBuilder.Entity("Checkpoint1.Models.Appointment", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("AppointmentId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("CustomerFullName");
+                    b.Property<Guid>("CustomerId");
 
                     b.Property<int>("Day");
 
-                    b.Property<string>("ServiceProviderFullName");
+                    b.Property<Guid>("ServiceProviderId");
 
                     b.Property<int>("Time");
 
-                    b.HasKey("Id");
+                    b.HasKey("AppointmentId");
+
+                    b.HasIndex("CustomerId");
+
+                    b.HasIndex("ServiceProviderId");
 
                     b.ToTable("Appointments");
                 });
 
             modelBuilder.Entity("Checkpoint1.Models.Customer", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("CustomerId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("FirstName");
 
                     b.Property<string>("LastName");
 
-                    b.HasKey("Id");
+                    b.HasKey("CustomerId");
 
                     b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("Checkpoint1.Models.ServiceProvider", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("ServiceProviderId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("FirstName");
 
                     b.Property<string>("LastName");
 
-                    b.HasKey("Id");
+                    b.HasKey("ServiceProviderId");
 
                     b.ToTable("ServiceProviders");
+                });
+
+            modelBuilder.Entity("Checkpoint1.Models.Appointment", b =>
+                {
+                    b.HasOne("Checkpoint1.Models.Customer", "Customer")
+                        .WithMany("Appointments")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Checkpoint1.Models.ServiceProvider", "ServiceProvider")
+                        .WithMany("Appointments")
+                        .HasForeignKey("ServiceProviderId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

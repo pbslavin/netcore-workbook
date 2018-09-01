@@ -1,61 +1,73 @@
 ﻿using Checkpoint1.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using Checkpoint1.Data;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace Checkpoint1.Controllers
 {
     public class AppointmentController : Controller
     {
         private readonly IRepository _repository;
+        private readonly ApplicationContext _context;
 
-        public AppointmentController(IRepository repository)
+        public AppointmentController(ApplicationContext context, IRepository repository)
         {
+            _context = context;
             _repository = repository;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View(_repository.Appointments);
+            ViewData["Customers"] = await _context.Customers.ToListAsync();
+            ViewData["ServiceProviders"] = await _context.ServiceProviders.ToListAsync();
+            return View(await _context.Appointments.OrderBy(a => a.Day).ThenBy(a => a.Time).ToListAsync());
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            bool hasCusts = _repository.Customers.Any();
-            bool hasServProvs = _repository.ServiceProviders.Any();
+            bool hasCusts = _context.Customers.Any();
+            bool hasServProvs = _context.ServiceProviders.Any();
             if (hasCusts && hasServProvs)
             {
-                ViewData["Customers"] = _repository.Customers;
-                ViewData["ServiceProviders"] = _repository.ServiceProviders;
+                ViewData["Customers"] = await _context.Customers.ToListAsync();
+                ViewData["ServiceProviders"] = await _context.ServiceProviders.ToListAsync();
                 return View();
             }
             else
             {
                 ViewBag.message = "You must create at least one customer and one service provider.";
-                return View("Index", _repository.Appointments);
+                return View("Index", _context.Appointments);
             }
         }
 
         [HttpPost]
-        public IActionResult Create(Appointment appointment)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(Appointment appointment)
         {
             try
             {
                 _repository.BookAppointment(appointment);
-                return View("Index", _repository.Appointments);
+                _context.Add(appointment);
+                await _context.SaveChangesAsync();
+                return Redirect("Index");
             }
             catch
             {
                 ViewBag.message = "That appointment is not available.";
-                return View("Index", _repository.Appointments);
+                return Redirect("Index");
             }
         }
 
-        public IActionResult Delete(Appointment appointment)
+        public async Task<IActionResult> Delete(Appointment appointment)
         {
-            var itemToRemove = _repository.Appointments.Single(r => r.Id == appointment.Id);
-            _repository.Appointments.Remove(itemToRemove);
-            return View("Index", _repository.Appointments);
+            ViewData["Customers"] = await _context.Customers.ToListAsync();
+            var itemToRemove = await _context.Appointments.FindAsync(appointment.AppointmentId);
+            _context.Appointments.Remove(itemToRemove);
+            await _context.SaveChangesAsync();
+            return View("Index", _context.Appointments);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Checkpoint1.Models
 {
@@ -11,16 +12,16 @@ namespace Checkpoint1.Models
 
         public Appointment()
         {
-            Id = Guid.NewGuid();
+            AppointmentId = Guid.NewGuid();
         }
-
-        [Key]
-        public Guid Id { get; set; }
+        
+        public Guid AppointmentId { get; set; }
         public Days Day { get; set; }
         public Times Time { get; set; }
 
         public Guid ServiceProviderId { get; set; }
         public ServiceProvider ServiceProvider { get; set; }
+
         public Guid CustomerId { get; set; }
         public Customer Customer { get; set; }
     }
