@@ -36,9 +36,9 @@ namespace Checkpoint1.Models
             Appointments = Appointments.OrderBy(a => a.Day).ThenBy(a => a.Time).ToList();
         }
 
-        public void BookAppointment(Appointment appointment)
+        public void BookAppointment(Appointment appointment, ApplicationContext context)
         {
-            List<Appointment> appointments = this.Appointments;
+            List<Appointment> appointments = context.Appointments.ToList();
 
             // Appointment is invalid if either customer or service provider has an appointment at the same time on the same day.
             var isInvalidAppointment = appointments.Any(a => ((a.CustomerId == appointment.CustomerId
@@ -46,9 +46,7 @@ namespace Checkpoint1.Models
                 && a.Time == appointment.Time && a.Day == appointment.Day));
             if (isInvalidAppointment)
                 throw new InvalidAppointmentException("Invalid Appointment");
-
-            //// if all is valid, save appointment to Appointments list.
-            ////this.AddAppointment(appointment);
+            // if appointment is valid
             return;
         }
     }

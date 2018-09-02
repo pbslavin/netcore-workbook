@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Checkpoint1.Data;
+using System.Collections.Generic;
 
 namespace Checkpoint1.Models
 {
@@ -14,6 +15,6 @@ namespace Checkpoint1.Models
 
         void AddAppointment(Appointment appointment);
 
-        void BookAppointment(Appointment appointment);
+        void BookAppointment(Appointment appointment, ApplicationContext context);
     }
 }

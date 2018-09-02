@@ -49,15 +49,17 @@ namespace Checkpoint1.Controllers
         {
             try
             {
-                _repository.BookAppointment(appointment);
+                _repository.BookAppointment(appointment, _context);
                 _context.Add(appointment);
                 await _context.SaveChangesAsync();
                 return Redirect("Index");
             }
             catch
             {
-                ViewBag.message = "That appointment is not available.";
-                return Redirect("Index");
+                ViewData["Customers"] = await _context.Customers.ToListAsync();
+                ViewData["ServiceProviders"] = await _context.ServiceProviders.ToListAsync();
+                ViewData["message"] = "That appointment is not available.";
+                return View("Index", _context.Appointments);
             }
         }
 

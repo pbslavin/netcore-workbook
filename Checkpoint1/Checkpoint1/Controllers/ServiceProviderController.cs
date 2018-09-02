@@ -36,7 +36,6 @@ namespace Checkpoint1.Controllers
         {
             _context.Add(serviceProvider);
             await _context.SaveChangesAsync();
-            //_repository.AddServiceProvider(serviceProvider);
             return View("Index", _context.ServiceProviders);
         }
 
@@ -49,7 +48,7 @@ namespace Checkpoint1.Controllers
         }
 
         public async Task<IActionResult> AppointmentSummary(ServiceProvider serviceProvider)
-        {   // Displays list of appointments grouped by day for a single service provider.
+        {   // Display list of appointments grouped by day for a single service provider.
             var CurrentServiceProvider = _context.ServiceProviders.Single(s => s.ServiceProviderId == serviceProvider.ServiceProviderId);
 
             List<Appointment> ServiceProviderAppointments = new List<Appointment>();
