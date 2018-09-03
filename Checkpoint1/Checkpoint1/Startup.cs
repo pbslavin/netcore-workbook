@@ -31,7 +31,7 @@ namespace Checkpoint1
 
             services.AddDbContext<ApplicationContext>(opts => opts.UseSqlServer(Configuration.GetConnectionString("Checkpoint1")));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            services.AddSingleton<IRepository>(new Repository());
+            services.AddSingleton<IAppointmentBookingService>(new AppointmentBookingService());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

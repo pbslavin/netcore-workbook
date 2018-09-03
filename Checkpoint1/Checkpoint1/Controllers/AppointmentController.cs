@@ -9,13 +9,13 @@ namespace Checkpoint1.Controllers
 {
     public class AppointmentController : Controller
     {
-        private readonly IRepository _repository;
+        private readonly IAppointmentBookingService _AppointmentBookingService;
         private readonly ApplicationContext _context;
 
-        public AppointmentController(ApplicationContext context, IRepository repository)
+        public AppointmentController(ApplicationContext context, IAppointmentBookingService AppointmentBookingService)
         {
             _context = context;
-            _repository = repository;
+            _AppointmentBookingService = AppointmentBookingService;
         }
 
         public async Task<IActionResult> Index()
@@ -38,18 +38,18 @@ namespace Checkpoint1.Controllers
             }
             else
             {
-                ViewBag.message = "You must create at least one customer and one service provider.";
+                ViewData["message"] = "You must create at least one customer and one service provider.";
                 return View("Index", _context.Appointments);
             }
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Appointment appointment)
+        public async Task<IActionResult> Create([Bind("AppointmentId,Day,Time,CustomerId,ServiceProviderId")] Appointment appointment)
         {
             try
             {
-                _repository.BookAppointment(appointment, _context);
+                _AppointmentBookingService.BookAppointment(appointment, _context);
                 _context.Add(appointment);
                 await _context.SaveChangesAsync();
                 return Redirect("Index");

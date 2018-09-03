@@ -1,6 +1,7 @@
 ﻿using Checkpoint1.Data;
 using Checkpoint1.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,18 +9,18 @@ namespace Checkpoint1.Controllers
 {
     public class CustomerController : Controller
     {
-        private readonly IRepository _repository;
+        private readonly IAppointmentBookingService _AppointmentBookingService;
         private readonly ApplicationContext _context;
 
-        public CustomerController(ApplicationContext context, IRepository repository)
+        public CustomerController(ApplicationContext context, IAppointmentBookingService AppointmentBookingService)
         {
             _context = context;
-            _repository = repository;
+            _AppointmentBookingService = AppointmentBookingService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View(_context.Customers);
+            return View(await _context.Customers.ToListAsync());
         }
 
         [HttpGet]
