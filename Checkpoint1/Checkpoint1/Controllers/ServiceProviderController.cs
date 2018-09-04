@@ -50,15 +50,16 @@ namespace Checkpoint1.Controllers
         public async Task<IActionResult> AppointmentSummary(ServiceProvider serviceProvider)
         {   // Display list of appointments grouped by day for a single service provider.
             var CurrentServiceProvider = _context.ServiceProviders.Single(s => s.ServiceProviderId == serviceProvider.ServiceProviderId);
+            
+            var ServiceProviderAppointments = _context
+                .Appointments
+                .Include(a => a.Customer)
+                .Where(a => a.ServiceProviderId == CurrentServiceProvider.ServiceProviderId)
+                .ToList();
 
-            List<Appointment> ServiceProviderAppointments = new List<Appointment>();
-            foreach (Appointment a in await _context.Appointments.ToListAsync())
-                if (a.ServiceProviderId == CurrentServiceProvider.ServiceProviderId)
-                {
-                    ServiceProviderAppointments.Add(a);
-                }
 
-            ViewData["ServiceProviderAppointments"] = ServiceProviderAppointments.OrderBy(a => a.Day).ThenBy(a => a.Time).ToList();
+
+            ViewBag.ServiceProviderAppointments = ServiceProviderAppointments.OrderBy(a => a.Day).ThenBy(a => a.Time).ToList();
             ViewData["ServiceProvider"] = CurrentServiceProvider.FullName;
             ViewData["Customers"] = await _context.Customers.ToListAsync();
             return View("AppointmentSummary");

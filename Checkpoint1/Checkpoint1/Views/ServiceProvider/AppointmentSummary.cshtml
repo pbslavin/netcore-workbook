@@ -18,7 +18,7 @@
     <tbody>
         @*Initialize day out of the range of the enum, so that the condition evaluates to 'false' the first time.*@
         @{ Appointment.Days day = (Appointment.Days)7; }
-        @foreach (var a in ViewData["ServiceProviderAppointments"] as List<Appointment>)
+        @foreach (var a in ViewBag.ServiceProviderAppointments)
         {
             @foreach (var c in ViewData["Customers"] as List<Customer>)
             {

@@ -5,18 +5,18 @@ using Checkpoint1.Data;
 
 namespace Checkpoint1.Models
 {
+    public class InvalidAppointmentException : Exception
+    {
+        public InvalidAppointmentException(string message) : base(message)
+        {
+        }
+    }
+
     public class AppointmentBookingService : IAppointmentBookingService
     {
-        public class InvalidAppointmentException : Exception
-        {
-            public InvalidAppointmentException(string message) : base(message)
-            {
-            }
-        }
 
         public bool BookAppointment(Appointment appointment, ApplicationContext context)
         {
-            bool valid = false;
             List<Appointment> appointments = context.Appointments.ToList();
 
             // Appointment is invalid if either customer or service provider has an appointment at the same time on the same day.
@@ -26,8 +26,7 @@ namespace Checkpoint1.Models
             if (isInvalidAppointment)
                 throw new InvalidAppointmentException("Invalid Appointment");
             // if appointment is valid
-            valid = true;
-            return valid;
+            return true;
         }
     }
 }

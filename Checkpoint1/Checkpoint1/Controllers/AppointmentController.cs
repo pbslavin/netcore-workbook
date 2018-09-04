@@ -59,7 +59,7 @@ namespace Checkpoint1.Controllers
                 ViewData["Customers"] = await _context.Customers.ToListAsync();
                 ViewData["ServiceProviders"] = await _context.ServiceProviders.ToListAsync();
                 ViewData["message"] = "That appointment is not available.";
-                return View("Index", _context.Appointments);
+                return View("Index", await _context.Appointments.OrderBy(a => a.Day).ThenBy(a => a.Time).ToListAsync());
             }
         }
 

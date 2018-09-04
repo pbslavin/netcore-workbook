@@ -78,42 +78,52 @@ namespace Checkpoint1.Tests.Controllers
             Assert.NotEmpty(context.Appointments);
         }
 
-        //        [Fact]
-        //        public void AppointmentBookingService_ShouldNotBookInvalidAppointment()
-        //        {
-        //            // Assemble
-        //            var optionsBuilder = new DbContextOptionsBuilder<ApplicationContext>();
-        //#pragma warning disable CS0618 // Type or member is obsolete
-        //            optionsBuilder.UseInMemoryDatabase();
-        //#pragma warning restore CS0618 // Type or member is obsolete
-        //            var context = new ApplicationContext(optionsBuilder.Options);
-        //            var appointmentBookingService = new AppointmentBookingService();
-        //            var customer1 = new Customer();
-        //            var customer2 = new Customer();
-        //            var serviceProvider1 = new ServiceProvider();
-        //            var serviceProvider2 = new ServiceProvider();
-        //            var appointment1 = new Appointment()
-        //            {
-        //                Customer = customer1,
-        //                ServiceProvider = serviceProvider1,
-        //                Day = 0,
-        //                Time = 0
-        //            };
-        //            var appointment2 = new Appointment()
-        //            {
-        //                Customer = customer1,
-        //                ServiceProvider = serviceProvider2,
-        //                Day = 0,
-        //                Time = 0
-        //            };
+        [Fact]
+        public void AppointmentBookingService_ShouldNotBookInvalidAppointment()
+        {
+            // Assemble
+            var optionsBuilder = new DbContextOptionsBuilder<ApplicationContext>();
+#pragma warning disable CS0618 // Type or member is obsolete
+            optionsBuilder.UseInMemoryDatabase();
+#pragma warning restore CS0618 // Type or member is obsolete
+            var context = new ApplicationContext(optionsBuilder.Options);
+            var appointmentBookingService = new AppointmentBookingService();
+            var customer1 = new Customer();
+            var customer2 = new Customer();
+            var serviceProvider1 = new ServiceProvider();
+            var serviceProvider2 = new ServiceProvider();
+            context.Add(customer1);
+            context.Add(customer2);
+            context.Add(serviceProvider1);
+            context.Add(serviceProvider2);
+            context.SaveChanges();
+            var appointment1 = new Appointment()
+            {
+                CustomerId = customer1.CustomerId,
+                ServiceProviderId = serviceProvider1.ServiceProviderId,
+                Day = 0,
+                Time = 0
+            };
+            var appointment2 = new Appointment()
+            {
+                CustomerId = customer1.CustomerId,
+                ServiceProviderId = serviceProvider2.ServiceProviderId,
+                Day = 0,
+                Time = 0
+            };
 
-        //            // Act
-        //            appointmentBookingService.BookAppointment(appointment1, context);
-        //            context.Add(appointment1);
-        //            bool isValid = appointmentBookingService.BookAppointment(appointment2, context);
+            // Act
+            context.Add(appointment1);
+            context.SaveChanges();
 
-        //            // Assert
-        //            Assert.Equal("false", isValid.ToString());
-        //        }
+            bool isValid = false;
+            Assert.Throws<InvalidAppointmentException>(() =>
+            {
+                isValid = appointmentBookingService.BookAppointment(appointment2, context);
+            });
+
+            // Assert
+            //Assert.Equal("false", isValid.ToString());
+        }
     }
 }
