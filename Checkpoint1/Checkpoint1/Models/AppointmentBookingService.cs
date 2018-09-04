@@ -22,7 +22,9 @@ namespace Checkpoint1.Models
             // Appointment is invalid if either customer or service provider has an appointment at the same time on the same day.
             var isInvalidAppointment = appointments.Any(a => ((a.CustomerId == appointment.CustomerId
                 || a.ServiceProviderId == appointment.ServiceProviderId)
-                && a.Time == appointment.Time && a.Day == appointment.Day));
+                && a.Time == appointment.Time && a.Day == appointment.Day))
+                || !context.Customers.Any(c => appointment.CustomerId == c.CustomerId)
+                || !context.ServiceProviders.Any(c => appointment.ServiceProviderId == c.ServiceProviderId);
             if (isInvalidAppointment)
                 throw new InvalidAppointmentException("Invalid Appointment");
             // if appointment is valid

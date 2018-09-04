@@ -60,8 +60,8 @@ namespace Checkpoint1.Controllers
 
 
             ViewBag.ServiceProviderAppointments = ServiceProviderAppointments.OrderBy(a => a.Day).ThenBy(a => a.Time).ToList();
-            ViewData["ServiceProvider"] = CurrentServiceProvider.FullName;
-            ViewData["Customers"] = await _context.Customers.ToListAsync();
+            ViewBag.ServiceProvider = CurrentServiceProvider.FullName;
+            ViewBag.Customers = await _context.Customers.ToListAsync();
             return View("AppointmentSummary");
         }
     }

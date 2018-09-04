@@ -20,8 +20,8 @@ namespace Checkpoint1.Controllers
 
         public async Task<IActionResult> Index()
         {
-            ViewData["Customers"] = await _context.Customers.ToListAsync();
-            ViewData["ServiceProviders"] = await _context.ServiceProviders.ToListAsync();
+            ViewBag.Customers = await _context.Customers.ToListAsync();
+            ViewBag.ServiceProviders = await _context.ServiceProviders.ToListAsync();
             return View(await _context.Appointments.OrderBy(a => a.Day).ThenBy(a => a.Time).ToListAsync());
         }
 
@@ -32,13 +32,13 @@ namespace Checkpoint1.Controllers
             bool hasServProvs = _context.ServiceProviders.Any();
             if (hasCusts && hasServProvs)
             {
-                ViewData["Customers"] = await _context.Customers.ToListAsync();
-                ViewData["ServiceProviders"] = await _context.ServiceProviders.ToListAsync();
+                ViewBag.Customers = await _context.Customers.ToListAsync();
+                ViewBag.ServiceProviders = await _context.ServiceProviders.ToListAsync();
                 return View();
             }
             else
             {
-                ViewData["message"] = "You must create at least one customer and one service provider.";
+                ViewBag.message = "You must create at least one customer and one service provider.";
                 return View("Index", _context.Appointments);
             }
         }
@@ -56,16 +56,16 @@ namespace Checkpoint1.Controllers
             }
             catch
             {
-                ViewData["Customers"] = await _context.Customers.ToListAsync();
-                ViewData["ServiceProviders"] = await _context.ServiceProviders.ToListAsync();
-                ViewData["message"] = "That appointment is not available.";
+                ViewBag.Customers = await _context.Customers.ToListAsync();
+                ViewBag.ServiceProviders = await _context.ServiceProviders.ToListAsync();
+                ViewBag.message = "That appointment is not available.";
                 return View("Index", await _context.Appointments.OrderBy(a => a.Day).ThenBy(a => a.Time).ToListAsync());
             }
         }
 
         public async Task<IActionResult> Delete(Appointment appointment)
         {
-            ViewData["Customers"] = await _context.Customers.ToListAsync();
+            ViewBag.Customers = await _context.Customers.ToListAsync();
             var itemToRemove = await _context.Appointments.FindAsync(appointment.AppointmentId);
             _context.Appointments.Remove(itemToRemove);
             await _context.SaveChangesAsync();

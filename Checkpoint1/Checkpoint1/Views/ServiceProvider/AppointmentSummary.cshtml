@@ -20,7 +20,7 @@
         @{ Appointment.Days day = (Appointment.Days)7; }
         @foreach (var a in ViewBag.ServiceProviderAppointments)
         {
-            @foreach (var c in ViewData["Customers"] as List<Customer>)
+            @foreach (var c in ViewBag.Customers)
             {
                 if (c.CustomerId == a.CustomerId)
                 {

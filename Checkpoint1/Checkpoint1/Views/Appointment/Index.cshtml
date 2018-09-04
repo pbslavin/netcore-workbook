@@ -6,7 +6,7 @@
 
 <h2>Appointments</h2>
 <p style="color: red;">
-    @ViewData["message"]
+    @ViewBag.message
 </p>
 <p>
     <a asp-action="Create">Create New</a>
@@ -19,7 +19,7 @@
     </thead>
     <tbody>
 @foreach (var a in Model) {
-    @foreach (var c in ViewData["Customers"] as List<Customer>)
+    @foreach (var c in ViewBag.Customers)
     {
         if (c.CustomerId == a.CustomerId)
         {
