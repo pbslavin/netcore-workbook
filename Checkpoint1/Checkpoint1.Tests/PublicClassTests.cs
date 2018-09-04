@@ -16,13 +16,8 @@ namespace Checkpoint1.Tests.Controllers
         public async Task Customer_ShouldCreateNewCustomerAsync()
         {
             // Assemble
-            var optionsBuilder = new DbContextOptionsBuilder<ApplicationContext>();
-#pragma warning disable CS0618 // Type or member is obsolete
-            optionsBuilder.UseInMemoryDatabase();
-#pragma warning restore CS0618 // Type or member is obsolete
-            var context = new ApplicationContext(optionsBuilder.Options);
-            var appointmentBookingService = new AppointmentBookingService();
-            var customerController = new CustomerController(context, appointmentBookingService);
+            var context = new ApplicationContext(DbAssembly().Options);
+            var customerController = new CustomerController(context, new AppointmentBookingService());
             var customer = (new Customer());
 
             // Act
@@ -36,13 +31,8 @@ namespace Checkpoint1.Tests.Controllers
         public async Task ServiceProvider_ShouldCreateNewServiceProviderAsync()
         {
             // Assemble
-            var optionsBuilder = new DbContextOptionsBuilder<ApplicationContext>();
-#pragma warning disable CS0618 // Type or member is obsolete
-            optionsBuilder.UseInMemoryDatabase();
-#pragma warning restore CS0618 // Type or member is obsolete
-            var context = new ApplicationContext(optionsBuilder.Options);
-            var appointmentBookingService = new AppointmentBookingService();
-            var serviceProviderController = new ServiceProviderController(context, appointmentBookingService);
+            var context = new ApplicationContext(DbAssembly().Options);
+            var serviceProviderController = new ServiceProviderController(context, new AppointmentBookingService());
             var serviceProvider = (new ServiceProvider ());
 
             // Act
@@ -56,13 +46,8 @@ namespace Checkpoint1.Tests.Controllers
         public async Task Appointment_ShouldCreateNewAppointmentAsync()
         {
             // Assemble
-            var optionsBuilder = new DbContextOptionsBuilder<ApplicationContext>();
-#pragma warning disable CS0618 // Type or member is obsolete
-            optionsBuilder.UseInMemoryDatabase();
-#pragma warning restore CS0618 // Type or member is obsolete
-            var context = new ApplicationContext(optionsBuilder.Options);
-            var appointmentBookingService = new AppointmentBookingService();
-            var appointmentController = new AppointmentController(context, appointmentBookingService);
+            var context = new ApplicationContext(DbAssembly().Options);
+            var appointmentController = new AppointmentController(context, new AppointmentBookingService());
             var appointment = new Appointment()
             {
                 Customer = new Customer(),
@@ -82,12 +67,7 @@ namespace Checkpoint1.Tests.Controllers
         public void AppointmentBookingService_ShouldNotBookInvalidAppointment()
         {
             // Assemble
-            var optionsBuilder = new DbContextOptionsBuilder<ApplicationContext>();
-#pragma warning disable CS0618 // Type or member is obsolete
-            optionsBuilder.UseInMemoryDatabase();
-#pragma warning restore CS0618 // Type or member is obsolete
-            var context = new ApplicationContext(optionsBuilder.Options);
-            var appointmentBookingService = new AppointmentBookingService();
+            var context = new ApplicationContext(DbAssembly().Options);
             var customer1 = new Customer();
             var customer2 = new Customer();
             var serviceProvider1 = new ServiceProvider();
@@ -117,13 +97,21 @@ namespace Checkpoint1.Tests.Controllers
             context.SaveChanges();
 
             bool isValid = false;
-            Assert.Throws<InvalidAppointmentException>(() =>
-            {
-                isValid = appointmentBookingService.BookAppointment(appointment2, context);
-            });
 
             // Assert
-            //Assert.Equal("false", isValid.ToString());
+            Assert.Throws<InvalidAppointmentException>(() =>
+            {
+                isValid = new AppointmentBookingService().BookAppointment(appointment2, context);
+            });
+        }
+
+        public DbContextOptionsBuilder<ApplicationContext> DbAssembly()
+        {
+            var optionsBuilder = new DbContextOptionsBuilder<ApplicationContext>();
+#pragma warning disable CS0618 // Type or member is obsolete
+            optionsBuilder.UseInMemoryDatabase();
+#pragma warning restore CS0618 // Type or member is obsolete
+            return optionsBuilder;
         }
     }
 }
