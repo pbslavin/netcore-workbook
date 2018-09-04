@@ -64,16 +64,14 @@ namespace Checkpoint1.Tests.Controllers
         }
 
         [Fact]
-        public void AppointmentBookingService_ShouldNotBookInvalidAppointment()
+        public void AppointmentBookingService_ShouldNotBookSameCustomerAppointment()
         {
             // Assemble
             var context = new ApplicationContext(DbAssembly().Options);
             var customer1 = new Customer();
-            var customer2 = new Customer();
             var serviceProvider1 = new ServiceProvider();
             var serviceProvider2 = new ServiceProvider();
             context.Add(customer1);
-            context.Add(customer2);
             context.Add(serviceProvider1);
             context.Add(serviceProvider2);
             context.SaveChanges();
